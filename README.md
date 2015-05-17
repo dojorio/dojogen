@@ -45,7 +45,23 @@ You can also pass extra arguments to describe custom dojo sessions
 ```
 $ dojogen g python fizz_buzz freshmen
 ```
-Generates 20150517_freshmen_python_fizz_buzz
+Generates 20150517_freshmen_python_fizz_buzz with fizz_buzz.py and test_fizz_buzz.py
+
+
+There are also extra options:
+
+Use non-specified generator or ignore language files: (-i/--ignore)
+```
+$ dojogen g -i python fizz_buzz
+```
+Generates an empty 20150517_python_fizz_buzz
+
+
+Specify the path (-p/--path)
+```
+$ dojogen g -p ~/dojo_niteroi python fizz_buzz
+```
+Generates 20150517_python_fizz_buzz inside ~/dojo_niteroi directory
 
 
 2- Language: shows existing generators
@@ -85,6 +101,17 @@ Contributing
 
 If you want to create a new generator, you just need to create a folder inside the generators directory and a text file inside generators/help.
 The name of the folder and text file will be the name of the generator.
+
+Please, make sure you create a file run.dojo inside the generator with the command line used to compile and run tests (if applyable) and a .dojoignore with rules to ignore compiled files.
+
+Some strings will be replaced by the problem name according to the expected case.
+Using the problem name fizz_buzz as example:
+```
+'___dojogen___'       : 'fizz_buzz'
+'___class_dojogen___' : 'FizzBuzz',
+'___down_dojogen___'  : 'fizzbuzz',
+'___camel_dojogen___' : 'fizzBuzz',
+```
 
 Contact
 ----

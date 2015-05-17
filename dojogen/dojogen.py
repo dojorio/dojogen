@@ -19,6 +19,7 @@ GENERATOR_MESSAGES = {
     'lang': "Language found: %s",
     'lang_error': "%s generator wasn't found",
     'exists': "Dojo path already exists!",
+    'create': "New %s!",
 }
 GENERATORS_PATH = join(os.path.dirname(__file__), 'generators')
 
@@ -50,6 +51,7 @@ def list_to_args(args, show=True):
     n = argparse.Namespace()
     n.language, n.problem = opts[:2]
     n.extra = opts[2:]
+    n.path = os.path.curdir
     return n
 
 
@@ -59,6 +61,8 @@ class Generator(object):
         self.language = args.language
         self.problem = args.problem
         self.extra =  ('_' + '_'.join(args.extra)) if args.extra else ''
+        self.path = args.path
+        self.ignore = args.ignore
 
         self.today = TODAY
 
@@ -69,7 +73,7 @@ class Generator(object):
             problem=self.problem,
         )
 
-        self.folder_path = join(os.path.curdir, self.folder_name)
+        self.folder_path = join(self.path, self.folder_name)
         self.generator_path = join(GENERATORS_PATH, self.language)
 
         splitted_name =  self.problem.split('_')
@@ -88,6 +92,7 @@ class Generator(object):
             '___down_dojogen___' : down_case,
             '___camel_dojogen___' : camel_case,
         }
+        print(self.cases)
 
         self.generated = False
 
@@ -117,14 +122,16 @@ class Generator(object):
     def generate(self, show=True):
         if not os.path.exists(self.folder_path):
             sprint(GENERATOR_MESSAGES['message'], show)
-
-            if os.path.exists(self.generator_path):
+            if self.ignore:
+                os.mkdir(join(self.path, self.folder_name))
+            elif os.path.exists(self.generator_path):
                 sprint(GENERATOR_MESSAGES['lang'] % (self.language), show)
                 self.copy_and_rename(
-                    os.path.curdir, self.folder_name, self.generator_path)
+                    self.path, self.folder_name, self.generator_path)
                 self.generated = True
             else:
                 raise GeneratorNotFoundError(self.language)
+            sprint(GENERATOR_MESSAGES['create'] % self.folder_name, show)
         else:
             self.generated = True
             raise GeneratorPathExistsError()
@@ -179,6 +186,12 @@ def main():
             'problem', type=str, help='Problem Name')
         parser_gen.add_argument(
             'extra', type=str, nargs='*', default='', help='Extra identifier')
+        parser_gen.add_argument(
+            '--path', '-p', type=str, default=os.path.curdir,
+            help='Custom path')
+        parser_gen.add_argument(
+            '--ignore', '-i', action='store_true',
+            help='Do not generate files. Create only the folder')
         parser_gen.set_defaults(func=generate_mode)
         dgen_msg = '...'
 

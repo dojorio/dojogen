@@ -24,7 +24,7 @@ print(find_packages(exclude=["dojogen/generators/*"]))
 
 setup(
     name="dojogen",
-    version="1.0.0",
+    version="1.1.0",
     description="Generates folders for coding dojo sessions",
     long_description=long_description,
     packages = find_packages(exclude=["generators"]),
