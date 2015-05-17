@@ -1,0 +1,1 @@
+gcc test___down_dojogen___.c -o test___down_dojogen___.test && ./test___down_dojogen___.test

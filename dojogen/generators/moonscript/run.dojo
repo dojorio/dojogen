@@ -1,0 +1,4 @@
+if moonc ___dojogen____spec.moon; then
+    busted ___dojogen____spec.lua
+    rm ___dojogen____spec.lua
+fi

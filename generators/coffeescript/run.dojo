@@ -1,2 +1,0 @@
-coffee -c #_#dojogen#_#.coffee &&
-jasmine-node --coffee .

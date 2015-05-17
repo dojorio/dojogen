@@ -1,0 +1,1 @@
+fpc Test___class_dojogen___.pas -TLINUX -oTest___class_dojogen___.test -Sm && ./Test___class_dojogen___.test

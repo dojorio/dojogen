@@ -1,0 +1,1 @@
+ghc --make Test___class_dojogen___ -o Test___class_dojogen___.test && ./Test___class_dojogen___.test
