@@ -1,0 +1,4 @@
+if moonc #_#dojotools#_#_spec.moon; then
+    busted #_#dojotools#_#_spec.lua
+    rm #_#dojotools#_#_spec.lua
+fi

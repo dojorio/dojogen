@@ -1,0 +1,1 @@
+fpc Test#_#class_dojotools#_#.pas -TLINUX -oTest#_#class_dojotools#_#.test -Sm && ./Test#_#class_dojotools#_#.test

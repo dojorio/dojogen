@@ -1,0 +1,19 @@
+Dependencies:
+  nodejs
+  npm
+  jasmine-node
+  coffee-script
+  jasmine-reporters
+
+TestUnit:
+  It uses jasmine-node in terminal with nodejs. Doesn't need a browser to run javascript
+
+Interactive Shell:
+  coffee -i  
+
+How To Install:
+  Install NodeJs and npm: https://gist.github.com/894213
+  npm install -g coffee-script
+  npm install -g jasmine-reporters
+  npm install -g jasmine-node
+  

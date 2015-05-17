@@ -1,0 +1,8 @@
+Dependencies:
+  python
+
+TestUnit:
+  It uses unittest that comes with python
+
+Interactive Shell:
+  python, ipython

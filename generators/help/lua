@@ -1,0 +1,8 @@
+Dependencies:
+  lua
+
+TestUnit:
+  busted
+
+Interactive Shell:
+  lua

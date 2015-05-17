@@ -1,0 +1,9 @@
+Dependencies:
+  lua
+  moonscript
+
+TestUnit:
+  busted
+
+Interactive Shell:
+  lua
