@@ -15,6 +15,21 @@ GENERATOR_MESSAGES = {
 }
 
 
+class GeneratorException(Exception):
+    value = GENERATOR_MESSAGES['error']
+    def __str__(self):
+        return repr(self.value)
+
+
+class GeneratorNotFoundError(GeneratorException):
+    def __init__(self, language):
+        self.value = GENERATOR_MESSAGES['lang_error'] % language
+
+
+class GeneratorPathExistsError(GeneratorException):
+    value = GENERATOR_MESSAGES['exists']
+
+
 join = lambda a, b: os.path.join(os.path.abspath(a), b)
 
 
@@ -26,11 +41,13 @@ def sprint(text, show):
 def list_to_args(args, show=True):
     opts = args.split(' ')
     if len(opts) < 2:
-        raise GENERATOR_MESSAGES['error']
+        raise GeneratorException()
     n = argparse.Namespace()
     n.language, n.problem = opts[:2]
     n.extra = opts[2:]
     return n
+
+
 
 
 class Generator(object):
@@ -103,10 +120,10 @@ class Generator(object):
                     os.path.curdir, self.folder_name, self.generator_path)
                 self.generated = True
             else:
-                raise GENERATOR_MESSAGES['lang_error'] % (self.language)
+                raise GeneratorNotFoundError(self.language)
         else:
             self.generated = True
-            raise GENERATOR_MESSAGES['exists']
+            raise GeneratorPathExistsError()
 
 
     def generated(self):
@@ -136,4 +153,7 @@ if __name__ == '__main__':
                         help='Extra identifier')
     args = parser.parse_args()
     generator = Generator(args)
-    generator.generate()
+    try:
+        generator.generate()
+    except GeneratorException as err:
+        print("Error: {0}".format(err))
