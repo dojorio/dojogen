@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# coding: utf-8
+from __future__ import (absolute_import, print_function,
+                        division, unicode_literals)
+
 from datetime import datetime
 import os
 import sys
@@ -66,7 +71,7 @@ class Generator(object):
 
         self.folder_path = join(os.path.curdir, self.folder_name)
         self.generator_path = join(
-            os.path.dirname(__file__), "generators/%s/" %(self.language))
+            os.path.dirname(__file__), "generators/%s/" % (self.language))
 
         splitted_name =  self.problem.split('_')
 
@@ -138,19 +143,65 @@ def generate(generate, directory):
     return directory
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='''Generates directory for coding dojo following the pattern:
-            {}[_extra]_language_problem\n'''.format(TODAY))
-    parser.add_argument('language', type=str,
-                        help='Programming Language')
-    parser.add_argument('problem', type=str,
-                        help='Problem Name')
-    parser.add_argument('extra', type=str, nargs='*', default='',
-                        help='Extra identifier')
-    args = parser.parse_args()
+def generate_mode(args):
     generator = Generator(args)
+    generator.generate()
+
+
+def help_mode(args):
+    help_path = join(
+        os.path.dirname(__file__), "generators/help/%s" % (args.language))
+    if os.path.exists(help_path):
+        with open(help_path, 'r') as f:
+            print(f.read())
+    else:
+        raise GeneratorNotFoundError(args.language)
+
+
+def lang_mode(args):
+    gens = join(os.path.dirname(__file__), "generators/")
+    for name in os.listdir(gens):
+        if os.path.isdir(join(gens, name)) and name != 'help':
+            print(name)
+
+if __name__ == '__main__':
+
+    gen_msg = '''Generates directory for coding dojo following the pattern:
+        {}[_extra]_language_problem\n'''.format(TODAY)
+    help_msg = 'Describes how to prepare the environment for a language'
+    lang_msg = 'Shows existing generators'
+    dgen_msg, dhelp_msg, dlang_msg = gen_msg, help_msg, lang_msg
+
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+    for name in ['generate', 'gen', 'g']: # Aliases on Python 2.x
+        parser_gen = subparsers.add_parser(
+            name, description=gen_msg, help=dgen_msg)
+        parser_gen.add_argument(
+            'language', type=str, help='Programming Language')
+        parser_gen.add_argument(
+            'problem', type=str, help='Problem Name')
+        parser_gen.add_argument(
+            'extra', type=str, nargs='*', default='', help='Extra identifier')
+        parser_gen.set_defaults(func=generate_mode)
+        dgen_msg = '...'
+
+    for name in ['help', 'man', 'h']: # Aliases on Python 2.x
+        parser_help = subparsers.add_parser(
+            name, description=help_msg, help=dhelp_msg)
+        parser_help.add_argument(
+            'language', type=str, help='Programming Language')
+        parser_help.set_defaults(func=help_mode)
+        dhelp_msg = '...'
+
+    for name in ['language', 'l']: # Aliases on Python 2.x
+        parser_lang = subparsers.add_parser(
+            name, description=lang_msg, help=dlang_msg)
+        parser_lang.set_defaults(func=lang_mode)
+        dlang_msg = '...'
+
+    args, _ = parser.parse_known_args()
     try:
-        generator.generate()
+        args.func(args)
     except GeneratorException as err:
         print("Error: {0}".format(err))
