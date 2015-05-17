@@ -1,15 +1,15 @@
 #!/bin/sh
-PRE_SNAKE="#\*dojotools\*#"
-POS_SNAKE="#_#dojotools#_#"
+PRE_SNAKE="#_#dojogen#_#"
+POS_SNAKE="#_#dojogen#_#"
 
-PRE_PASCAL="#\*class_dojotools\*#"
-POS_PASCAL="#_#class_dojotools#_#"
+PRE_PASCAL="#_#class_dojogen#_#"
+POS_PASCAL="#_#class_dojogen#_#"
 
-PRE_DOWN="#\*down_dojotools\*#"
-POS_DOWN="#_#down_dojotools#_#"
+PRE_DOWN="#_#down_dojogen#_#"
+POS_DOWN="#_#down_dojogen#_#"
 
-PRE_CAMEL="#\*camel_dojotools\*#"
-POS_CAMEL="#_#camel_dojotools#_#"
+PRE_CAMEL="#_#camel_dojogen#_#"
+POS_CAMEL="#_#camel_dojogen#_#"
 
 
 for FILE in `find . -name "*$PRE_SNAKE*"`; do NEW=`echo $FILE | sed -e "s/$PRE_SNAKE/$POS_SNAKE/"`; mv "$FILE" "$NEW"; done

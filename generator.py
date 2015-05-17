@@ -48,8 +48,6 @@ def list_to_args(args, show=True):
     return n
 
 
-
-
 class Generator(object):
 
     def __init__(self, args):
@@ -81,11 +79,13 @@ class Generator(object):
         )
 
         self.cases = {
-            '#_#dojotools#_#' : snake_case,
-            '#_#class_dojotools#_#' : pascal_case,
-            '#_#down_dojotools#_#' : down_case,
-            '#_#camel_dojotools#_#' : camel_case,
+            '#_#dojogen#_#' : snake_case,
+            '#_#class_dojogen#_#' : pascal_case,
+            '#_#down_dojogen#_#' : down_case,
+            '#_#camel_dojogen#_#' : camel_case,
         }
+
+        self.generated = False
 
 
     def replace(self, text):
@@ -125,9 +125,6 @@ class Generator(object):
             self.generated = True
             raise GeneratorPathExistsError()
 
-
-    def generated(self):
-        return ((not self.errors) or self.messages['exists'] in self.errors)
 
 
 def generate(generate, directory):
